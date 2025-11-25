@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions/setup-node@v1
         with:
-          node-version: "16.x"
+          node-version: "24.x"
       - name: Cache Dependencies
         id: cache-dependencies
         uses: actions/cache@v2
@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions/setup-node@v1
         with:
-          node-version: "16.x"
+          node-version: "24.x"
       - uses: actions/cache@v2
         with:
           path: node_modules
@@ -47,10 +47,10 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions/setup-node@v1
         with:
-          node-version: "16.x"
+          node-version: "24.x"
           always-auth: true
           registry-url: https://npm.pkg.github.com
-          scope: "@vsdbmv2"
+          scope: "@vsdbm"
       - uses: actions/cache@v2
         with:
           path: node_modules
@@ -60,7 +60,7 @@ jobs:
       - name: Configure NPMRC
         run: |
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.PERSONAL_TOKEN }}" > ~/.npmrc
-          echo "@vsdbmv2:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+          echo "@vsdbm:registry=https://npm.pkg.github.com/" >> ~/.npmrc
       - name: Publish Package
         run: yarn publish
         env:
@@ -74,7 +74,7 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions/setup-node@v1
         with:
-          node-version: "16.x"
+          node-version: "24.x"
       - name: get-npm-version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master

@@ -1,7 +1,7 @@
 {
   "version": "0.0.71",
-  "name": "@vsdbmv2/mapping-library",
-  "umd:name": "@vsdbmv2/mapping-library",
+  "name": "@vsdbm/mapping-library",
+  "umd:name": "@vsdbm/mapping-library",
   "description": "VSDBMv2 mapping methods",
   "unpkg": "dist/index.min.js",
   "module": "dist/index.mjs",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "directory": "@vsdbmv2/mapping-library",
+    "directory": "@vsdbm/mapping-library",
     "url": "https://github.com/vsdbmv2/mapping-library"
   },
   "author": {
@@ -67,5 +67,8 @@
     "ts-node": "^10.8.0",
     "tsm": "2.2.1",
     "typescript": "^4.6.4"
+  },
+  "dependencies": {
+    "sparse-matrix": "^1.0.0"
   }
 }
