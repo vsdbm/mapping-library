@@ -4,6 +4,7 @@ import type { Config } from "@jest/types";
 const config: Config.InitialOptions = {
 	preset: "ts-jest",
 	testEnvironment: "node",
+	maxWorkers: "95%",
 	verbose: true,
 	maxWorkers: "90%",
 };

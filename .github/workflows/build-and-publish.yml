@@ -6,32 +6,74 @@ on:
       - main
 
 jobs:
+  install:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "24.x"
+      - name: Cache Dependencies
+        id: cache-dependencies
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+      - name: Cache miss
+        if: steps.cache-dependencies.outputs.cache-hit != 'true'
+        run: yarn install
+
+  validation:
+    runs-on: ubuntu-18.04
+    needs: install
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "24.x"
+      - uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+      - name: Lint
+        run: yarn lint
+      - name: Unit test
+        run: yarn test
+
   publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "22.x"
+          node-version: "24.x"
           always-auth: true
           registry-url: https://npm.pkg.github.com
-          scope: "@vsdbmv2"
-      - name: install yarn
-        run: npm i -g yarn
-      - name: Install
-        run: yarn
-      - name: Tests
-        run: yarn test
+          scope: "@vsdbm"
+      - uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
       - name: Running Build
         run: yarn build
       - name: Configure NPMRC
         run: |
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.PERSONAL_TOKEN }}" > ~/.npmrc
-          echo "@vsdbmv2:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+          echo "@vsdbm:registry=https://npm.pkg.github.com/" >> ~/.npmrc
       - name: Publish Package
         run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+  release:
+    name: Create Release
+    runs-on: ubuntu-18.04
+    needs: publish
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "24.x"
       - name: get-npm-version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master
