@@ -6,5 +6,6 @@ const config: Config.InitialOptions = {
 	testEnvironment: "node",
 	maxWorkers: "95%",
 	verbose: true,
+	maxWorkers: "90%",
 };
 export default config;

@@ -10,11 +10,20 @@ export interface IPayloadGeneric {
 	alignment_score: number;
 	epitope_maps: IEpitopeMap[];
 	idSequence?: number;
+	idSequenceSubtype?: number;
+	idSubtype?: number;
+	organism?: string;
 }
 
-export type IPayloadGlobalAlignment = Omit<IPayloadGeneric, "alignment_score" | "epitope_maps">;
-export type IPayloadLocalAlignment = Pick<IPayloadGeneric, "alignment_score">;
-export type IPayloadEpitopeMap = Pick<IPayloadGeneric, "epitope_maps">;
+export type IPayloadGlobalAlignment = Omit<
+	IPayloadGeneric,
+	"alignment_score" | "epitope_maps" | "idSubtype" | "idSequenceSubtype"
+>;
+export type IPayloadLocalAlignment = Omit<IPayloadGeneric, "epitope_maps" | "map_init" | "map_end" | "coverage_pct">;
+export type IPayloadEpitopeMap = Omit<
+	IPayloadGeneric,
+	"alignment_score" | "map_init" | "map_end" | "coverage_pct" | "idSubtype" | "idSequenceSubtype"
+>;
 
 export type TComputeGlobalAlignment = (
 	referenceSequence: string | string[],
@@ -30,6 +39,8 @@ export interface IWork {
 	type: workType;
 	id1: number;
 	id2?: number;
+	idSubtype?: number;
+	organism: string;
 	sequence1: string;
 	sequence2?: string;
 	epitopes: string[];
